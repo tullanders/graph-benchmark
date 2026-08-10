@@ -10,5 +10,5 @@ return 'created ' + count(r) + ' relationships';
 
 LOAD CSV WITH HEADERS FROM 'file:///home/arcadedb/import/lank.csv' AS row 
 MATCH (l:Link {id: row.ELEMENT_ID}) 
-SET l.length = row.Sparlangd
+SET l.length = tofloat(row.Sparlangd)
 return 'updated ' + count(l) + ' links';
