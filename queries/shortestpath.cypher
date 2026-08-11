@@ -3,20 +3,23 @@
 */ 
 
 // Neo4j:
-MATCH (l1:Link {id:'0004502c-cb0b-421d-8542-a0294dfd8001'})
-MATCH (l2:Link {id:'0001cd0d-2492-4f3c-a225-2fe70b50172c'})
+MATCH (:PlaceCenter {signature:'Bdn'})<--(l1:Link)
+MATCH (:PlaceCenter {signature:'Mgb'})<--(l2:Link)
+with l1, l2 limit 1
 MATCH p = SHORTEST 1 (l1)-[:NEXT_LINK]-+(l2)
 RETURN p;
 
 // Memgraph:
-MATCH (l1:Link {id:'0004502c-cb0b-421d-8542-a0294dfd8001'})
-MATCH (l2:Link {id:'0001cd0d-2492-4f3c-a225-2fe70b50172c'})
+MATCH (:PlaceCenter {signature:'Bdn'})<--(l1:Link)
+MATCH (:PlaceCenter {signature:'Mgb'})<--(l2:Link)
+with l1, l2 limit 1
 MATCH p = (l1)-[:NEXT_LINK *BFS]-(l2)
 RETURN p;
 
 // ArcadeDB:
-MATCH (l1:Link {id:'0004502c-cb0b-421d-8542-a0294dfd8001'})
-MATCH (l2:Link {id:'0001cd0d-2492-4f3c-a225-2fe70b50172c'})
+MATCH (:PlaceCenter {signature:'Bdn'})<--(l1:Link)
+MATCH (:PlaceCenter {signature:'Mgb'})<--(l2:Link)
+with l1, l2 limit 1
 MATCH p = shortestPath(
   (l1)-[:NEXT_LINK*]-(l2)
 )
