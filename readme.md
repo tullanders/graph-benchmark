@@ -1,14 +1,14 @@
 # graph-benchmark
 
-Jämförelse av grafdatabaser (Neo4j, Memgraph, ArcadeDB) mot samma dataset och frågor.
+Comparison of graph databases (Neo4j, Memgraph, ArcadeDB) against the same dataset and queries.
 
-## Förutsättningar
+## Prerequisites
 
-- Docker och Docker Compose
+- Docker and Docker Compose
 
-## Starta databaser
+## Starting databases
 
-Starta en i taget eller alla samtidigt:
+Start one at a time or all at once:
 
 ```bash
 docker compose up -d neo4j
@@ -17,38 +17,38 @@ docker compose up -d arcadedb
 ```
 
 ```bash
-# eller alla på en gång
+# or all at once
 docker compose up -d
 ```
 
-## Gränssnitt
+## Web interfaces
 
-| Databas   | URL                        | Credentials              |
+| Database  | URL                        | Credentials              |
 |-----------|----------------------------|--------------------------|
 | Neo4j     | http://localhost:7474       | neo4j / benchmark        |
 | Memgraph  | http://localhost:3000       | –                        |
 | ArcadeDB  | http://localhost:2480       | root / benchmark         |
 
-## Bolt-portar
+## Bolt ports
 
-| Databas   | Port  |
+| Database  | Port  |
 |-----------|-------|
 | Neo4j     | 7687  |
 | Memgraph  | 7688  |
 
 ## Data
 
-CSV-filer i `data/` monteras in i respektive container:
+CSV files in `data/` are mounted into each container:
 
-| Databas   | Sökväg i container                    |
+| Database  | Path in container                     |
 |-----------|---------------------------------------|
 | Neo4j     | `/var/lib/neo4j/import/`              |
 | Memgraph  | `/usr/lib/memgraph/import-data/`      |
 | ArcadeDB  | `/home/arcadedb/import/`              |
 
-Seed-skript finns i `seed/`.
+Seed scripts are located in `seed/`.
 
-## Stänga ner
+## Shut down
 
 ```bash
 docker compose down
