@@ -48,6 +48,25 @@ CSV files in `data/` are mounted into each container:
 
 Seed scripts are located in `seed/`.
 
+### Seeding ArcadeDB
+
+`seed/seed-arcadedb.sql` is a single sqlscript covering the whole ingest — schema,
+CSV import, indexes and edges. Create the database once, then run the file:
+
+```bash
+curl -u root:benchmark -X POST http://localhost:2480/api/v1/server \
+     -H 'Content-Type: application/json' \
+     -d '{"command":"create database benchmark"}'
+
+curl -u root:benchmark -X POST http://localhost:2480/api/v1/command/benchmark \
+     -H 'Content-Type: application/json' \
+     --data-binary @<(jq -Rs '{language:"sqlscript", command:.}' seed/seed-arcadedb.sql)
+```
+
+It prints the record count per type when done, and re-running it re-seeds from
+scratch. Studio (http://localhost:2480) works too — paste the file in and set the
+language to `sqlscript`.
+
 ## Shut down
 
 ```bash

@@ -52,7 +52,7 @@ services:
   arcadedb:
     image: arcadedata/arcadedb:latest
     environment:
-      JAVA_OPTS: "-Xms512m -Xmx2g -Darcadedb.server.rootPassword=benchmark -Darcadedb.opencypher.loadCsv.allowFileUrls=true"      
+      JAVA_OPTS: "-Xms512m -Xmx2g -Darcadedb.server.rootPassword=benchmark"
     volumes:
       - ./data:/home/arcadedb/import:ro
     ports:

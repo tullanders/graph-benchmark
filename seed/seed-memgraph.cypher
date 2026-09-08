@@ -3,6 +3,7 @@ CREATE INDEX ON :Link(id);
 CREATE INDEX ON :Link(fromNode);
 CREATE INDEX ON :Link(toNode);
 CREATE INDEX ON :PlaceCenter(signature);
+CREATE INDEX ON :Station(signature);
 
 LOAD CSV FROM "/usr/lib/memgraph/import-data/link.csv" WITH HEADER AS row
 CREATE (l:Link {id:row.LINKSEQUENCE_OID})
@@ -22,5 +23,10 @@ SET p.signature = row.Signatur, p.name = row.Platsnamn,
 p.plc = toInteger(row.Plc_kod)
 with p, row
 MATCH (l:Link {id: row.ELEMENT_ID})
-CREATE (l)-[r:HAS_PLACECENTER]->(p)
-return 'Created ' + count(p) + ' PlaceCenter and ' + count(r) + ' relationships with Link' as result
+CREATE (l)-[r:HAS_PLACECENTER]->(p);
+
+LOAD CSV FROM "/usr/lib/memgraph/import-data/trainstations.json" WITH HEADER AS row
+CREATE (s:Station {signature: row.LocationSignature})
+SET s.name = row.AdvertisedLocationName,
+    s.plc = toInteger(row.PrimaryLocationCode),
+    s.geometryWkt = row.Geometry.WGS84;
