@@ -3,27 +3,27 @@
 */ 
 
 // Neo4j:
-MATCH (:PlaceCenter {signature:'Bdn'})<--(l1:Link)
-MATCH (:PlaceCenter {signature:'Mgb'})<--(l2:Link)
-with l1, l2 limit 1
+MATCH (:Station {signature:'Hp'})-[:HAS_PLACECENTER]->(:PlaceCenter)<--(l1:Link)
+MATCH (:Station {signature:'Mgb'})-[:HAS_PLACECENTER]->(:PlaceCenter)<--(l2:Link)
+with l1, l2 ORDER BY l1.id, l2.id limit 1
 MATCH p = SHORTEST 1 (l1)-[:NEXT_LINK]-+(l2)
-RETURN p;
+RETURN length(p);
 
 // Memgraph:
-MATCH (:PlaceCenter {signature:'Bdn'})<--(l1:Link)
-MATCH (:PlaceCenter {signature:'Mgb'})<--(l2:Link)
-with l1, l2 limit 1
+MATCH (:Station {signature:'Hp'})-[:HAS_PLACECENTER]->(:PlaceCenter)<--(l1:Link)
+MATCH (:Station {signature:'Mgb'})-[:HAS_PLACECENTER]->(:PlaceCenter)<--(l2:Link)
+with l1, l2 ORDER BY l1.id, l2.id limit 1
 MATCH p = (l1)-[:NEXT_LINK *BFS]-(l2)
-RETURN p;
+RETURN length(p);
 
 // ArcadeDB:
-MATCH (:PlaceCenter {signature:'Bdn'})<--(l1:Link)
-MATCH (:PlaceCenter {signature:'Mgb'})<--(l2:Link)
-with l1, l2 limit 1
+MATCH (:Station {signature:'Hp'})-[:HAS_PLACECENTER]->(:PlaceCenter)<--(l1:Link)
+MATCH (:Station {signature:'Mgb'})-[:HAS_PLACECENTER]->(:PlaceCenter)<--(l2:Link)
+with l1, l2 ORDER BY l1.id, l2.id limit 1
 MATCH p = shortestPath(
   (l1)-[:NEXT_LINK*]-(l2)
 )
-RETURN p;
+RETURN length(p);
 
 //----------------------
 

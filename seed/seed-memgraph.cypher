@@ -25,8 +25,13 @@ with p, row
 MATCH (l:Link {id: row.ELEMENT_ID})
 CREATE (l)-[r:HAS_PLACECENTER]->(p);
 
-LOAD CSV FROM "/usr/lib/memgraph/import-data/trainstations.json" WITH HEADER AS row
+CALL json_util.load_from_path("/usr/lib/memgraph/import-data/trainstations.json")
+YIELD objects
+UNWIND objects[0].TrainStation AS row
 CREATE (s:Station {signature: row.LocationSignature})
 SET s.name = row.AdvertisedLocationName,
     s.plc = toInteger(row.PrimaryLocationCode),
-    s.geometryWkt = row.Geometry.WGS84;
+    s.geometryWkt = row.Geometry.WGS84
+with s
+match (pc:PlaceCenter {signature:s.signature})--()
+create (s)-[:HAS_PLACECENTER]->(pc);
