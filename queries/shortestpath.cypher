@@ -27,20 +27,21 @@ RETURN length(p);
 
 
 /*
-    Simple Shortest Path through the Location-node
+    Simple graph traversal
 */ 
+// Neo4j, Memgraph, and ArcadeDB 
+MATCH p=(:Location {signature:'FLN'})-[:NEXT_LOCATION*..12]-(:Location {signature:'AVKY'}) 
+RETURN nodes(p), relationships(p)
 
-//----------------------
 
 /*
-    Weighted Shortest Path
+    Weighted Shortest Path through the Location-node
 */ 
-
 // Neo4j:
 MATCH (l1:Location {signature: 'HP'}), (l2:Location {signature: 'MGB'})
 CALL apoc.algo.dijkstra(l1, l2, 'NEXT_LOCATION', 'meters')
 YIELD path, weight
-RETURN [n IN nodes(path) | n.name] AS route, weight
+RETURN [n IN nodes(path) | n.name] AS route, weight;
 
 // Memgraph:
 MATCH (l1:Location {signature: 'HP'}), (l2:Location {signature: 'MGB'})
@@ -49,8 +50,8 @@ RETURN [n IN nodes(path) | n.name] AS route,
   reduce(x = 0, r IN relationships(path) | x + r.meters) AS meters;
 
 // ArcadeDB:
-MATCH (l1:Location {signature: 'HP'}), (l2:Location {signature: 'BLGC'})
+MATCH (l1:Location {signature: 'HP'}), (l2:Location {signature: 'MGB'})
 CALL algo.dijkstra(l1, l2, 'NEXT_LOCATION', 'meters') YIELD path, weight
 return [x in path.nodes | x.signature] as route, 
   reduce(x=0, y in path.relationships | x+y.meters) as length,
-  weight
+  weight, size(path.nodes) as count;
