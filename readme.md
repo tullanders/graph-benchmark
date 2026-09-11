@@ -1,6 +1,6 @@
 # graph-benchmark
 
-Comparison of graph databases (Neo4j, Memgraph, ArcadeDB) against the same dataset and queries.
+Comparison of graph databases (Neo4j, Memgraph, ArcadeDB) against the same dataset and queries.     
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ docker compose up -d
 |-----------|-------|
 | Neo4j     | 7687  |
 | Memgraph  | 7688  |
-
+     
 ## Data
 
 CSV files in `data/` are mounted into each container:
